@@ -7,17 +7,15 @@
         <progress
           id="player"
           max="100"
-          :value="playerHealth.current">
-          {{ playerHealth }}
-        </progress>
+          :value="playerHP">
+          </progress>
       </li>
       <li>
         <h3>Monster</h3>
         <progress
           id="monster"
           max="100"
-          :value="monsterHealth.current">
-          {{ monsterHealth }}
+          :value="monsterHP">
         </progress>
       </li>
     </ul>
@@ -26,27 +24,9 @@
 
 <script>
 export default {
-  data() {
-    const MAX_HEALTH = {
-      PLAYER: 100,
-      MONSTER: 150,
-    };
-
-    return {
-      playerHealth: {
-        max: MAX_HEALTH.PLAYER,
-        current: this.calcHealthPercent(MAX_HEALTH.PLAYER, MAX_HEALTH.PLAYER),
-      },
-      monsterHealth: {
-        max: MAX_HEALTH.MONSTER,
-        current: this.calcHealthPercent(MAX_HEALTH.MONSTER, MAX_HEALTH.MONSTER),
-      },
-    };
-  },
-  methods: {
-    calcHealthPercent(total, current) {
-      return (current * 100) / total;
-    },
+  props: {
+    playerHP: Number,
+    monsterHP: Number,
   },
 };
 </script>

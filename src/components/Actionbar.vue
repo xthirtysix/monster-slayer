@@ -3,14 +3,15 @@
     <button
       class="action-bar__btn action-bar__btn--start"
       type="button"
-      @click="$emit('start-end-game')">
+      @click="$emit('start-game')">
       Start
     </button>
   </section>
   <section class="action-bar" v-else>
     <button
       class="action-bar__btn action-bar__btn--attack"
-      type="button">
+      type="button"
+      @click="$emit('attack')">
       Attack
     </button>
     <button
@@ -25,8 +26,7 @@
     </button>
     <button
       class="action-bar__btn action-bar__btn--run"
-      type="button"
-      @click="$emit('start-end-game')">
+      type="button">
       Run!
     </button>
   </section>
@@ -67,6 +67,10 @@ export default {
 
 .action-bar__btn:hover {
   opacity: 0.7;
+}
+
+.action-bar__btn:active {
+  opacity: 0.3;
 }
 
 .action-bar__btn--start {
