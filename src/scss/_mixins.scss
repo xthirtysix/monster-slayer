@@ -1,0 +1,11 @@
+@mixin border {
+  padding: 1rem;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 5px;
+}
+
+@mixin list-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
