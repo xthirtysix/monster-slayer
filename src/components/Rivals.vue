@@ -52,8 +52,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import '@/scss/_mixins.scss';
-  @import '@/scss/_base.scss';
+  @import '../scss/_mixins.scss';
+  @import '../scss/_base.scss';
 
   .rivals {
     @include border;
