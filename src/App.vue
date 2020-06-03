@@ -11,12 +11,16 @@
       @heal="roundWithHeal"
       @run="run"
       :isGameRunning="isGameRunning"/>
+    <Battlelog
+      :log="log"
+      :isGameRunning="isGameRunning"/>
   </div>
 </template>
 
 <script>
 import Rivals from './components/Rivals.vue';
 import Actionbar from './components/Actionbar.vue';
+import Battlelog from './components/Battlelog.vue';
 import {
   MAX_HEALTH,
   HEALTH_RESTORED,
@@ -31,14 +35,17 @@ export default {
       isGameRunning: false,
       playerHealth: MAX_HEALTH.PLAYER,
       monsterHealth: MAX_HEALTH.MONSTER,
+      log: [],
     };
   },
   components: {
     Rivals,
     Actionbar,
+    Battlelog,
   },
   methods: {
     startGame() {
+      this.log = [];
       this.isGameRunning = true;
       this.playerHealth = (MAX_HEALTH.PLAYER * MAX_PERCENT) / MAX_HEALTH.PLAYER;
       this.monsterHealth = (MAX_HEALTH.MONSTER * MAX_PERCENT) / MAX_HEALTH.MONSTER;
@@ -47,31 +54,33 @@ export default {
       return Math.max(Math.floor(Math.random() * max) + 1, min);
     },
     playerAttack() {
+      const damageDealt = this.calcDamage(DAMAGE.PLAYER.MIN, DAMAGE.PLAYER.MAX);
+
       this.monsterHealth -= Math.round((
-        this.calcDamage(
-          DAMAGE.PLAYER.MIN,
-          DAMAGE.PLAYER.MAX,
-        )
+        damageDealt
         * MAX_PERCENT)
         / MAX_HEALTH.MONSTER);
+
+      return damageDealt;
     },
     playerSpecialAttack() {
+      const damageDealt = this.calcDamage(DAMAGE.PLAYER.SPECIAL.MIN, DAMAGE.PLAYER.SPECIAL.MAX);
+
       this.monsterHealth -= Math.round((
-        this.calcDamage(
-          DAMAGE.PLAYER.SPECIAL.MIN,
-          DAMAGE.PLAYER.SPECIAL.MAX,
-        )
+        damageDealt
         * MAX_PERCENT)
         / MAX_HEALTH.MONSTER);
+
+      return damageDealt;
     },
     monsterAttack() {
+      const damageDealt = this.calcDamage(DAMAGE.MONSTER.MIN, DAMAGE.MONSTER.MAX);
       this.playerHealth -= Math.round((
-        this.calcDamage(
-          DAMAGE.MONSTER.MIN,
-          DAMAGE.MONSTER.MAX,
-        )
+        damageDealt
         * MAX_PERCENT)
         / MAX_HEALTH.PLAYER);
+
+      return damageDealt;
     },
     heal() {
       const healthPercent = Math.round((HEALTH_RESTORED * MAX_PERCENT) / MAX_HEALTH.PLAYER);
@@ -81,15 +90,48 @@ export default {
       } else {
         this.playerHealth += healthPercent;
       }
+
+      return HEALTH_RESTORED;
     },
     run() {
       this.isGameRunning = false;
     },
     round(playerAttackType) {
-      playerAttackType();
-      this.monsterAttack();
+      // Player turn
+      const playerHit = playerAttackType();
 
-      if (this.playerHealth <= 0 || this.monsterHealth <= 0) {
+      let attackType;
+
+      switch (playerAttackType) {
+        case this.playerSpecialAttack:
+          attackType = 'attacks hard';
+          break;
+        case this.heal:
+          attackType = 'heals';
+          break;
+        default:
+          attackType = 'attacks';
+      }
+
+      this.log.unshift({
+        subject: 'Player', subjectDoes: attackType, value: playerHit, key: `player${Date.now()}`,
+      });
+
+      if (this.monsterHealth <= 0) {
+        this.monsterHealth = 0;
+        this.isGameRunning = false;
+        return;
+      }
+
+      // Monster turn
+      const monsterHit = this.monsterAttack();
+
+      this.log.unshift({
+        subject: 'Monster', subjectDoes: 'attacks', value: monsterHit, key: `monster${Date.now()}`,
+      });
+
+      if (this.playerHealth <= 0) {
+        this.playerHealth = 0;
         this.isGameRunning = false;
       }
     },
