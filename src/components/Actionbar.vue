@@ -1,32 +1,35 @@
 <template>
-  <section class="action-bar" v-if="!running">
+  <section class="action-bar" v-if="!isGameRunning">
     <button
       class="action-bar__btn action-bar__btn--start"
       type="button"
-      @click="$emit('start-end-game')">
+      @click="$emit('startGame')">
       Start
     </button>
   </section>
   <section class="action-bar" v-else>
     <button
       class="action-bar__btn action-bar__btn--attack"
-      type="button">
+      type="button"
+      @click="$emit('attack')">
       Attack
     </button>
     <button
       class="action-bar__btn action-bar__btn--special"
-      type="button">
+      type="button"
+      @click="$emit('specialAttack')">
       Special attack
     </button>
     <button
       class="action-bar__btn action-bar__btn--heal"
-      type="button">
+      type="button"
+      @click="$emit('heal')">
       Heal
     </button>
     <button
       class="action-bar__btn action-bar__btn--run"
       type="button"
-      @click="$emit('start-end-game')">
+      @click="$emit('run')">
       Run!
     </button>
   </section>
@@ -35,11 +38,7 @@
 <script>
 export default {
   props: {
-    running: Boolean,
-  },
-  data() {
-    return {
-    };
+    isGameRunning: Boolean,
   },
 };
 </script>
@@ -67,6 +66,10 @@ export default {
 
 .action-bar__btn:hover {
   opacity: 0.7;
+}
+
+.action-bar__btn:active {
+  opacity: 0.3;
 }
 
 .action-bar__btn--start {
