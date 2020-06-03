@@ -1,10 +1,10 @@
 <template>
-  <section class="action-bar" v-if="!isGameRunning">
+  <section class="action-bar" v-if="!isGameRunning" :class="{'action-bar--start': !isGameRunning}">
     <button
       class="action-bar__btn action-bar__btn--start"
       type="button"
       @click="$emit('startGame')">
-      Start
+      New game
     </button>
   </section>
   <section class="action-bar" v-else>
@@ -53,6 +53,10 @@ export default {
   padding: 2rem 0 1rem;
 }
 
+.action-bar--start {
+  grid-template-columns: none;
+}
+
 .action-bar__btn {
   padding: 1rem 2rem;
   text-transform: uppercase;
@@ -77,12 +81,12 @@ export default {
 }
 
 .action-bar__btn--attack {
-    background-color: var(--red);
-  }
+  background-color: var(--red);
+}
 
 .action-bar__btn--special {
-    background-color: var(--red);
-  }
+  background-color: var(--red);
+}
 
 .action-bar__btn--heal {
   background-color: var(--green);
