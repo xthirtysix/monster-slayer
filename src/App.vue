@@ -78,9 +78,9 @@ export default {
 
       if (this.playerHealth + healthPercent >= 100) {
         this.playerHealth = 100;
+      } else {
+        this.playerHealth += healthPercent;
       }
-
-      this.playerHealth += healthPercent;
     },
     run() {
       this.isGameRunning = false;
