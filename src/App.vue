@@ -3,7 +3,8 @@
     <h1 class="main-header">{{ name }}</h1>
     <Rivals
       :playerHP="playerHealth"
-      :monsterHP="monsterHealth"/>
+      :monsterHP="monsterHealth"
+      :status="status"/>
     <Actionbar
       @startGame="startGame"
       @attack="roundWithAttack"
@@ -21,6 +22,7 @@
 import Rivals from './components/Rivals.vue';
 import Actionbar from './components/Actionbar.vue';
 import Battlelog from './components/Battlelog.vue';
+
 import {
   MAX_HEALTH,
   HEALTH_RESTORED,
@@ -36,6 +38,7 @@ export default {
       playerHealth: MAX_HEALTH.PLAYER,
       monsterHealth: MAX_HEALTH.MONSTER,
       log: [],
+      status: 'Game is not started',
     };
   },
   components: {
@@ -49,6 +52,7 @@ export default {
       this.isGameRunning = true;
       this.playerHealth = (MAX_HEALTH.PLAYER * MAX_PERCENT) / MAX_HEALTH.PLAYER;
       this.monsterHealth = (MAX_HEALTH.MONSTER * MAX_PERCENT) / MAX_HEALTH.MONSTER;
+      this.status = 'Fight!';
     },
     calcDamage(min, max) {
       return Math.max(Math.floor(Math.random() * max) + 1, min);
@@ -95,6 +99,7 @@ export default {
     },
     run() {
       this.isGameRunning = false;
+      this.status = 'You flee the battle... how dare You?';
     },
     round(playerAttackType) {
       // Player turn
@@ -119,6 +124,7 @@ export default {
 
       if (this.monsterHealth <= 0) {
         this.monsterHealth = 0;
+        this.status = 'You win!';
         this.isGameRunning = false;
         return;
       }
@@ -132,6 +138,7 @@ export default {
 
       if (this.playerHealth <= 0) {
         this.playerHealth = 0;
+        this.status = 'You loose!';
         this.isGameRunning = false;
       }
     },
