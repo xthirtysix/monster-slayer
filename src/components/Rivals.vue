@@ -10,6 +10,9 @@
           :value="playerHP">
           </progress>
       </li>
+      <li class="game-status">
+        <Gamestatus :status="status"/>
+      </li>
       <li>
         <h3>Monster</h3>
         <progress
@@ -23,10 +26,16 @@
 </template>
 
 <script>
+import Gamestatus from './Gamestatus.vue';
+
 export default {
   props: {
     playerHP: Number,
     monsterHP: Number,
+    status: String,
+  },
+  components: {
+    Gamestatus,
   },
 };
 </script>
@@ -39,13 +48,24 @@ export default {
     @include border;
   }
 
+  h3 {
+    margin: 0;
+  }
+
   ul {
     @include list-reset;
   }
 
+  .game-status {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .rivals__list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: 1rem;
   }
 </style>
