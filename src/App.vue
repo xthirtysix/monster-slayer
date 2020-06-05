@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
     <h1 class="main-header">{{ name }}</h1>
+    <Gamestatus :status="status"/>
     <Rivals
       :playerHP="playerHealth"
       :monsterHP="monsterHealth"
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import Gamestatus from './components/Gamestatus.vue';
 import Rivals from './components/Rivals.vue';
 import Actionbar from './components/Actionbar.vue';
 import Battlelog from './components/Battlelog.vue';
@@ -29,6 +31,9 @@ import {
   MAX_PERCENT,
   DAMAGE,
 } from './config/constants';
+
+import randomInRange from './utils/randomInRange';
+import calcPercent from './utils/calcPercent';
 
 export default {
   data() {
@@ -42,6 +47,7 @@ export default {
     };
   },
   components: {
+    Gamestatus,
     Rivals,
     Actionbar,
     Battlelog,
@@ -50,52 +56,43 @@ export default {
     startGame() {
       this.log = [];
       this.isGameRunning = true;
-      this.playerHealth = (MAX_HEALTH.PLAYER * MAX_PERCENT) / MAX_HEALTH.PLAYER;
-      this.monsterHealth = (MAX_HEALTH.MONSTER * MAX_PERCENT) / MAX_HEALTH.MONSTER;
+      this.playerHealth = MAX_PERCENT;
+      this.monsterHealth = MAX_PERCENT;
       this.status = 'Fight!';
     },
-    calcDamage(min, max) {
-      return Math.max(Math.floor(Math.random() * max) + 1, min);
-    },
     playerAttack() {
-      const damageDealt = this.calcDamage(DAMAGE.PLAYER.MIN, DAMAGE.PLAYER.MAX);
+      const damageDealt = randomInRange(DAMAGE.PLAYER.MIN, DAMAGE.PLAYER.MAX);
 
-      this.monsterHealth -= Math.round((
-        damageDealt
-        * MAX_PERCENT)
-        / MAX_HEALTH.MONSTER);
+      this.monsterHealth -= calcPercent(damageDealt, MAX_HEALTH.MONSTER);
 
       return damageDealt;
     },
     playerSpecialAttack() {
-      const damageDealt = this.calcDamage(DAMAGE.PLAYER.SPECIAL.MIN, DAMAGE.PLAYER.SPECIAL.MAX);
+      const damageDealt = randomInRange(DAMAGE.PLAYER.SPECIAL.MIN, DAMAGE.PLAYER.SPECIAL.MAX);
 
-      this.monsterHealth -= Math.round((
-        damageDealt
-        * MAX_PERCENT)
-        / MAX_HEALTH.MONSTER);
+      this.monsterHealth -= calcPercent(damageDealt, MAX_HEALTH.MONSTER);
 
       return damageDealt;
     },
     monsterAttack() {
-      const damageDealt = this.calcDamage(DAMAGE.MONSTER.MIN, DAMAGE.MONSTER.MAX);
-      this.playerHealth -= Math.round((
-        damageDealt
-        * MAX_PERCENT)
-        / MAX_HEALTH.PLAYER);
+      const damageDealt = randomInRange(DAMAGE.MONSTER.MIN, DAMAGE.MONSTER.MAX);
+
+      this.playerHealth -= calcPercent(damageDealt, MAX_HEALTH.PLAYER);
 
       return damageDealt;
     },
     heal() {
-      const healthPercent = Math.round((HEALTH_RESTORED * MAX_PERCENT) / MAX_HEALTH.PLAYER);
+      const healthRestored = randomInRange(HEALTH_RESTORED.MIN, HEALTH_RESTORED.MAX);
 
-      if (this.playerHealth + healthPercent >= 100) {
+      const restoredInPercent = calcPercent(healthRestored, MAX_HEALTH.PLAYER);
+
+      if (this.playerHealth + restoredInPercent >= 100) {
         this.playerHealth = 100;
       } else {
-        this.playerHealth += healthPercent;
+        this.playerHealth += restoredInPercent;
       }
 
-      return HEALTH_RESTORED;
+      return healthRestored;
     },
     run() {
       this.isGameRunning = false;

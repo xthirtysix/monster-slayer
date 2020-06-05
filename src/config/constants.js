@@ -18,6 +18,9 @@ export const MAX_HEALTH = {
   MONSTER: 150,
 };
 
-export const HEALTH_RESTORED = 10;
+export const HEALTH_RESTORED = {
+  MIN: 10,
+  MAX: 20,
+};
 
 export const MAX_PERCENT = 100;
