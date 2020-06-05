@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style type="scss">
+<style>
 .game-status {
   text-transform: uppercase;
 }

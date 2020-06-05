@@ -32,35 +32,36 @@ export default {
 };
 </script>
 
-<style type="scss">
+<style lang="scss">
 @import '../scss/_base.scss';
 @import '../scss/_variables.scss';
+@import '../scss/_mixins.scss';
 
 .log {
+  @include border;
   max-width: 400px;
   margin: 0 auto;
-  border: 1px solid rgba(0,0,0,0.25);
-  border-radius: 5px;
 }
 
 .log__list {
+  @include list-reset;
   max-height: 300px;
-  margin: 0;
   padding: 0.5rem 1rem;
-  list-style: none;
   overflow: auto;
 }
 
 p {
-  margin: 0;
-  padding: 0.3rem;
-  text-align: left;
-  border-radius: 5px;
-}
+  .action & {
+    margin: 0;
+    padding: 0.3rem;
+    text-align: left;
+    border-radius: 5px;
+  }
 
-.action--monster p {
-  text-align: right;
-  background-color: var(--gray);
+  .action--monster & {
+    text-align: right;
+    background-color: var(--gray);
+  }
 }
 
 .action__subject {
@@ -69,9 +70,10 @@ p {
 
 .action__value {
   color: var(--red);
+
+  &--heal {
+    color: var(--green);
+  }
 }
 
-.action__value--heal {
-  color: var(--green);
-}
 </style>
