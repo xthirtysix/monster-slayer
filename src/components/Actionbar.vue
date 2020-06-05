@@ -43,8 +43,9 @@ export default {
 };
 </script>
 
-<style type="scss">
+<style lang="scss">
 @import '../scss/_variables.scss';
+
 .action-bar {
   display: grid;
   grid-template-columns: max-content max-content max-content max-content;
@@ -66,35 +67,35 @@ export default {
   border-radius: 5px;
   outline: none;
   transition: 0.3s ease-in-out;
-}
 
-.action-bar__btn:hover {
-  opacity: 0.7;
-}
+  &:hover {
+    opacity: 0.7;
+  }
 
-.action-bar__btn:active {
-  opacity: 0.3;
-}
+  &:active {
+    opacity: 0.3;
+  }
 
-.action-bar__btn--start {
-  background-color: var(--blue);
-}
+  &--start {
+    background-color: var(--blue);
+  }
 
-.action-bar__btn--attack {
-  background-color: var(--red);
-}
+  &--attack {
+    background-color: var(--red);
+  }
 
-.action-bar__btn--special {
-  background-color: var(--red);
-}
+  &--special {
+    background-color: var(--red);
+  }
 
-.action-bar__btn--heal {
-  background-color: var(--green);
-}
+  &--heal {
+    background-color: var(--green);
+  }
 
-.action-bar__btn--run {
-  color: var(--black);
-  background-color: var(--whie);
-  border: 1px solid var(--black);
+  &--run {
+    color: var(--black);
+    background-color: var(--whie);
+    border: 1px solid var(--black);
+  }
 }
 </style>
