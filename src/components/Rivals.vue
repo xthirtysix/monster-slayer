@@ -40,6 +40,19 @@ export default {
     @include border;
   }
 
+  ::-moz-progress-bar {
+    transition: padding-bottom 1s;
+    padding-bottom: var(--value);
+    transform-origin: 0 0;
+    transform: translateX(-15px);
+    padding-left: 15px;
+    height: 0;
+  }
+
+  progress {
+    overflow: hidden;
+  }
+
   h3 {
     margin: 0;
   }

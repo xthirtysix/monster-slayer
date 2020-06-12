@@ -13,9 +13,11 @@
       @heal="roundWithHeal"
       @run="run"
       :isGameRunning="isGameRunning"/>
-    <Battlelog
-      :log="log"
-      :isGameRunning="isGameRunning"/>
+    <transition name="fade" mode="out-in">
+      <Battlelog
+        :log="log"
+        :isGameRunning="isGameRunning"/>
+    </transition>
   </div>
 </template>
 
@@ -167,5 +169,35 @@ export default {
 
   h1 {
     text-transform: uppercase;
+  }
+
+  .fade-enter {
+    transform: translateY(-100px);
+  }
+
+  .fade-enter-active {
+    animation: fade-in 1s ease-out forwards;
+  }
+
+  .fade-leave {
+    animation: fade-out 1s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 </style>
